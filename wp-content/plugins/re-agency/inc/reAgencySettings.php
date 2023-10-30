@@ -15,7 +15,7 @@ function reAgency_settings_init() {
 	// Register a new section in the "reAgency" page.
 	add_settings_section(
 		'reAgency_section_developers',
-		__( 'Custom templates.', 'reAgency' ), 'reAgency_section_developers_callback',
+		__( '', 'reAgency' ), 'reAgency_section_developers_callback',
 		'reAgency'
 	);
 
@@ -23,7 +23,7 @@ function reAgency_settings_init() {
 	add_settings_field(
 		'reAgency_field_template', // As of WP 4.6 this value is used only internally.
 		                        // Use $args' label_for to populate the id inside the callback.
-			__( 'Template', 'reAgency' ),
+			__( 'New user template', 'reAgency' ),
 		'reAgency_field_template_cb',
 		'reAgency',
 		'reAgency_section_developers',
@@ -33,6 +33,32 @@ function reAgency_settings_init() {
 			'reAgency_custom_data' => 'custom',
 		)
 	);
+    add_settings_field(
+        'reAgency_field_offerings_template', // As of WP 4.6 this value is used only internally.
+        // Use $args' label_for to populate the id inside the callback.
+        __('Offering template', 'reAgency'),
+        'reAgency_field_offerings_template_cb',
+        'reAgency',
+        'reAgency_section_developers',
+        array(
+            'label_for' => 'reAgency_field_offerings_template',
+            'class' => 'reAgency_row',
+            'reAgency_custom_data' => 'custom',
+        )
+    );
+    add_settings_field(
+        'reAgency_field_single_offering', // As of WP 4.6 this value is used only internally.
+        // Use $args' label_for to populate the id inside the callback.
+        __('Single offering template', 'reAgency'),
+        'reAgency_field_single_offering_cb',
+        'reAgency',
+        'reAgency_section_developers',
+        array(
+            'label_for' => 'reAgency_field_single_offering',
+            'class' => 'reAgency_row',
+            'reAgency_custom_data' => 'custom',
+        )
+    );
     add_settings_field(
         'reAgency_field_domain', // As of WP 4.6 this value is used only internally.
         // Use $args' label_for to populate the id inside the callback.
@@ -59,6 +85,7 @@ function reAgency_settings_init() {
             'reAgency_custom_data' => 'custom',
         )
     );
+
     add_settings_field(
         'reAgency_field_bootstrap', // As of WP 4.6 this value is used only internally.
         // Use $args' label_for to populate the id inside the callback.
@@ -85,6 +112,19 @@ function reAgency_settings_init() {
             'reAgency_custom_data' => 'custom',
         )
     );
+    add_settings_field(
+        'reAgency_field_imageUrl', // As of WP 4.6 this value is used only internally.
+        // Use $args' label_for to populate the id inside the callback.
+        __('ImageUrl', 'reAgency'),
+        'reAgency_field_imageUrl_cb',
+        'reAgency',
+        'reAgency_section_developers',
+        array(
+            'label_for' => 'reAgency_field_imageUrl',
+            'class' => 'reAgency_row',
+            'reAgency_custom_data' => 'custom',
+        )
+    );
 }
 
 /**
@@ -107,6 +147,9 @@ add_action( 'admin_init', 'reAgency_settings_init' );
 function reAgency_section_developers_callback( $args ) {
 	?>
 	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Adjust settings for RE-Agency.', 'reAgency' ); ?></p>
+    <p><strong>Shortcodes:</strong><br>[re-agency-registration]<br>[re-agency-offers]</p>
+
+
 	<?php
 }
 
@@ -129,10 +172,10 @@ function reAgency_field_template_cb( $args ) {
 			data-custom="<?php echo esc_attr( $args['reAgency_custom_data'] ); ?>"
 			name="reAgency_options[<?php echo esc_attr( $args['label_for'] ); ?>]">
 		<option value="default" <?php echo isset( $options[ $args['label_for'] ] ) ? ( selected( $options[ $args['label_for'] ], 'default', false ) ) : ( '' ); ?>>
-			<?php esc_html_e( 'default template', 'reAgency' ); ?>
+			<?php esc_html_e( 'default', 'reAgency' ); ?>
 		</option>
  		<option value="custom" <?php echo isset( $options[ $args['label_for'] ] ) ? ( selected( $options[ $args['label_for'] ], 'custom', false ) ) : ( '' ); ?>>
-			<?php esc_html_e( 'custom template', 'reAgency' ); ?>
+			<?php esc_html_e( 'custom', 'reAgency' ); ?>
 		</option>
 	</select>
 	<p class="description">
@@ -196,24 +239,11 @@ function reAgency_field_apiUrl_cb($args)
     // Get the value of the setting we've registered with register_setting()
     $options = get_option('reAgency_options');
     ?>
-        <input id="<?php echo esc_attr($args['label_for']); ?>"
+        <input class="regular-text" id="<?php echo esc_attr($args['label_for']); ?>"
                data-custom="<?php echo esc_attr($args['reAgency_custom_data']); ?>"
                name="reAgency_options[<?php echo esc_attr($args['label_for']); ?>]"
         value="<?php echo isset($options[$args['label_for']]) ? $options[$args['label_for']] : '';  ?>">
-   <!-- <select
-            id="<?php /*echo esc_attr($args['label_for']); */?>"
-            data-custom="<?php /*echo esc_attr($args['reAgency_custom_data']); */?>"
-            name="reAgency_options[<?php /*echo esc_attr($args['label_for']); */?>]">
-        <option value="red" <?php /*echo isset($options[$args['label_for']]) ? (selected($options[$args['label_for']], 'local-domain', false)) : (''); */?>>
-            <?php /*esc_html_e('same domain', 'reAgency'); */?>
-        </option>
-        <option value="blue" <?php /*echo isset($options[$args['label_for']]) ? (selected($options[$args['label_for']], 'custom-domain', false)) : (''); */?>>
-            <?php /*esc_html_e('other domain', 'reAgency'); */?>
-        </option>
-    </select>
-    <p class="description">
-        <?php /*esc_html_e('Use local if wordpress is on the same server and domain as as RE-Agency.', 'reAgency'); */?>
-    </p>-->
+
     <p class="description">
         <?php esc_html_e('Fill in the API url if you chose a custom domain. ', 'reAgency'); ?>
     </p>
@@ -242,6 +272,69 @@ function reAgency_field_sandbox_cb($args)
 
     <?php
 }
+
+function reAgency_field_imageUrl_cb($args)
+{
+    // Get the value of the setting we've registered with register_setting()
+    $options = get_option('reAgency_options');
+    ?>
+    <input class="regular-text" id="<?php echo esc_attr($args['label_for']); ?>"
+           data-custom="<?php echo esc_attr($args['reAgency_custom_data']); ?>"
+           name="reAgency_options[<?php echo esc_attr($args['label_for']); ?>]"
+           value="<?php echo isset($options[$args['label_for']]) ? $options[$args['label_for']] : ''; ?>">
+
+    <p class="description">
+        <?php esc_html_e('Fill in the Image url if you chose a custom domain. ', 'reAgency'); ?>
+    </p>
+    <?php
+}
+function reAgency_field_offerings_template_cb($args)
+{
+    // Get the value of the setting we've registered with register_setting()
+    $options = get_option('reAgency_options');
+    ?>
+    <select
+            id="<?php echo esc_attr($args['label_for']); ?>"
+            data-custom="<?php echo esc_attr($args['reAgency_custom_data']); ?>"
+            name="reAgency_options[<?php echo esc_attr($args['label_for']); ?>]">
+        <option value="default" <?php echo isset($options[$args['label_for']]) ? (selected($options[$args['label_for']], 'default', false)) : (''); ?>>
+            <?php esc_html_e('default', 'reAgency'); ?>
+        </option>
+        <option value="custom" <?php echo isset($options[$args['label_for']]) ? (selected($options[$args['label_for']], 'custom', false)) : (''); ?>>
+            <?php esc_html_e('custom', 'reAgency'); ?>
+        </option>
+    </select>
+    <p class="description">
+        <?php esc_html_e('Enable custom template for offerings. Copy template/partial-assetitem.html into theme directory', 'reAgency'); ?>
+    </p>
+
+    <?php
+}
+
+function reAgency_field_single_offering_cb($args)
+{
+    // Get the value of the setting we've registered with register_setting()
+    $options = get_option('reAgency_options');
+    ?>
+    <select
+            id="<?php echo esc_attr($args['label_for']); ?>"
+            data-custom="<?php echo esc_attr($args['reAgency_custom_data']); ?>"
+            name="reAgency_options[<?php echo esc_attr($args['label_for']); ?>]">
+        <option value="default" <?php echo isset($options[$args['label_for']]) ? (selected($options[$args['label_for']], 'default', false)) : (''); ?>>
+            <?php esc_html_e('default', 'reAgency'); ?>
+        </option>
+        <option value="custom" <?php echo isset($options[$args['label_for']]) ? (selected($options[$args['label_for']], 'custom', false)) : (''); ?>>
+            <?php esc_html_e('custom', 'reAgency'); ?>
+        </option>
+    </select>
+    <p class="description">
+        <?php esc_html_e('Enable custom template for offerings. Copy template/partial-assetitem.html into theme directory', 'reAgency'); ?>
+    </p>
+
+    <?php
+}
+
+
 /**
  * Add the top level menu page.
  */

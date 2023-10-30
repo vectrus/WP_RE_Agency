@@ -108,16 +108,41 @@ The offerings
 
 jQuery(document).ready(function ($) {
 
-    /*var pageURL = localvar.siteurl;
-    console.log('Page URL : ', pageURL);*/
-    var template = $.get("/nrw/wp-content/plugins/re-agency/templates/partial-assetitem.html");
+    var siteUrl = myData.siteUrl;
+    var imageUrl = myData.imageUrl;
+    var theme = myData.theme;
+    // Check custom aanbod url
+    if(myData.custom_offer_template == 'custom') {
+        var template = $.get(siteUrl + "/wp-content/themes/"+theme+"/templates/partial-assetitem.html");
+    }
+    else {
+        var template = $.get(siteUrl + "/wp-content/plugins/re-agency/templates/partial-assetitem.html");
+    }
+// Check custom api url
+    if (myData.custom_domain == 'same domain') {
+
+        var apiUrl = 'https://admin.nrw-wonen.nl/api/v1/aanbod';
+        console.log('APi URL: ', apiUrl);
+    } else {
+        var apiUrl = myData.apiUrl;
+    }
+    // Check custom Image url
+    if (myData.custom_domain == 'same domain') {
+
+        var imageUrl = 'https://admin.nrw-wonen.nl/storage/panden';
+        console.log('IMAGE URL: ', imageUrl);
+    } else {
+        var imageUrl = myData.imageUrl;
+    }
+    console.log('Asseturl', siteUrl);
+
    // / template = JSON.stringify(template['responseText']);
 
     $.ajax({
         type: "GET",
         dataType: "json",
         data: {name: name},
-        url: "https://admin.nrw-wonen.nl/api/v1/aanbod",
+        url: apiUrl,
         success: function (response) {
             //alert('Get Success');
             //$('#json').text(JSON.stringify(response));
@@ -126,13 +151,28 @@ jQuery(document).ready(function ($) {
             var toAdd = document.createDocumentFragment();
             var i = 0;
             while (i < Object.keys(response).length) {
-                console.log(response[i]['assetstreet']);
+                if (jQuery.isEmptyObject(response[i]['assetimages']))
+                 {
+                   //  continue;
+
+                     continue;
+                }
+                //console.log(response[i]['assetstreet']);
                 let assetstreet = response[i]['assetstreet'];
                 let assetnumber = response[i]['assetnumber'];
                 let assetnumberadd = response[i]['assetnumberadd'];
                 let assetpostalcode = response[i]['assetpostalcode'];
                 let assetcity = response[i]['assetcity'];
                 let assetimage = response[i]['assetimages'][0]['image'];
+                //let assetimage = 'default';
+             /*   console.log("Current asset image", response[i]['assetimages'][0]['image']);
+                if(typeof response[i]['assetimages'][0]['image'] !== 'undefined') {*/
+
+
+             /*   } else {
+                    assetimage = 'default';
+
+                }*/
                 let assetrent = response[i]['assetrent'];
                 let id = response[i]['id'];
                 let updated_at = response[i]['updated_at'];
@@ -146,6 +186,7 @@ jQuery(document).ready(function ($) {
                 let assetcableandinternet = response[i]['assetcableandinternet'];
                 let assetheatingsystem = response[i]['assetheatingsystem'];
                 let assetrest = response[i]['assetrest'];
+                let totalrent = assetrent + assetservice + assetfurniture + assetupholstery + assetwater + assetgasandlight + assetcableandinternet + assetheatingsystem + assetrest;
                 let assetadtitle = response[i]['assetadtitle'];
                 let assetsmallintrotext = response[i]['assetsmallintrotext'];
                 let assetstatuschangedate = response[i]['assetstatuschangedate'];
@@ -215,6 +256,7 @@ jQuery(document).ready(function ($) {
                 freshtemplate = freshtemplate.replace('{{assetcableandinternet}}', assetcableandinternet);
                 freshtemplate = freshtemplate.replace('{{assetheatingsystem}}', assetheatingsystem);
                 freshtemplate = freshtemplate.replace('{{assetrest}}', assetrest);
+                freshtemplate = freshtemplate.replace('{{totalrent}}', totalrent);
                 freshtemplate = freshtemplate.replace('{{assetadtitle}}', assetadtitle);
                 freshtemplate = freshtemplate.replace('{{assetsmallintrotext}}', assetsmallintrotext);
                 freshtemplate = freshtemplate.replace('{{assetstatuschangedate}}', assetstatuschangedate);
@@ -259,15 +301,19 @@ jQuery(document).ready(function ($) {
                 freshtemplate = freshtemplate.replace('{{assetwashingmachine}}', assetwashingmachine);
                 freshtemplate = freshtemplate.replace('{{assetisshared}}', assetisshared);
 
-
-
-                if(assetnumberadd != '' && assetnumberadd != null) {
-                    console.log(assetnumberadd);
-                    let url = 'https://admin.nrw-wonen.nl/storage/panden/'+ assetstreet + '/' + assetnumber + '/' + assetnumberadd + '/' + assetimage +'.jpg';
-                    freshtemplate = freshtemplate.replace('{{assetimage}}', url);
+                console.log('AssetImage' , assetimage);
+                if (response[i]['assetimages'][0]['image'] !== 'undefined') {
+                    if (assetnumberadd != '' && assetnumberadd != null) {
+                        console.log(assetnumberadd);
+                        let url = imageUrl + '/' + assetstreet + '/' + assetnumber + '/' + assetnumberadd + '/' + assetimage + '.jpg';
+                        freshtemplate = freshtemplate.replace('{{assetimage}}', url);
+                    } else {
+                        let url = imageUrl + '/' + assetstreet + '/' + assetnumber + '/' + assetimage + '.jpg';
+                        freshtemplate = freshtemplate.replace('{{assetimage}}', url);
+                    }
                 }
                 else {
-                    let url = 'https://admin.nrw-wonen.nl/storage/panden/' + assetstreet + '/' + assetnumber +  '/' + assetimage + '.jpg';
+                    let url = siteUrl + '/wp-content/plugins/re-agency/images/default.jpg';
                     freshtemplate = freshtemplate.replace('{{assetimage}}', url);
                 }
 

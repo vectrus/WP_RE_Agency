@@ -40,15 +40,26 @@ class reAgencyController {
 
         }
 
+      /*  if ($options['reAgency_field_apiUrl'] == 'enabled') {*/
+        $localdata = array('siteUrl' => site_url(),
+            'apiUrl' => $this->options['reAgency_field_apiUrl'],
+            'imageUrl' => $this->options['reAgency_field_imageUrl'],
+            'theme' => wp_get_theme(),
+            'custom_domain' => $this->options['reAgency_field_domain'],
+            'custom_offer_template' => $this->options['reAgency_field_offerings_template'],
+            'custom_newuser_template' => $this->options['reAgency_field_template'],
+            'custom_single_template' => $this->options['reAgency_field_single_offering']); // Data object to pass to jQueryscripts
+        $localise = json_encode($localdata);
+        add_action('wp_footer', function () use ($localise) {
+            printf('<script type="text/javascript">var myData = %s</script>', $localise);
+        });
 
 
     }
 
     function prefix_enqueue()
     {
-        // Set some local global vars for jQuery
-        wp_enqueue_script('localvars');
-        wp_localize_script('localvars', 'localvar', array('siteurl' => get_option('siteurl')));
+
 
         wp_enqueue_script('jquery');
         wp_register_script('jquery', '//code.jquery.com/jquery-3.7.1.min.js');

@@ -3,63 +3,74 @@
 
       {{assetstreet}} {{assetnumber}} {{assetnumberadd}} <br>
   {{assetpostalcode}} {{assetcity}} <br>
-&euro; {{assetrent}} <br>
+&euro; {{assetrent}},= <br>
   <img width="280px" src="{{assetimage}}">
 <br>
     <a href="//admin.nrw-wonen.nl/api/v1/aanbod/{{id}}">Details</a><br>
 
-    {{updated_at}}
-    {{status}}
-    {{statussince}}
-    {{assetservice}}
-    {{assetfurniture}}
-    {{assetupholstery}}
-    {{assetwater}}
-    {{assetgasandlight}}
-    {{assetcableandinternet}}
-    {{assetheatingsystem}}
-    {{assetrest}}
-    {{assetadtitle}}
-    {{assetsmallintrotext}}
-    {{assetstatuschangedate}}
-    {{assetnumberbedrooms}}
-    {{assetnumberbathrooms}}
-    {{assetnumbertoilets}}
-    {{assetgarden}}
-    {{assetterras}}
-    {{assetliving}}
-    {{assetbalcony}}
-    {{assetgarage}}
-    {{assethasbath}}
-    {{assethasparking}}
-    {{assethaslift}}
-    {{assethasairconditioning}}
-    {{assethasswimmingpool}}
-    {{assethasfireplace}}
-    {{assettitleen}}
-    {{assetdetailtextensmall}}
-    {{assetenergylable}}
-    {{assetneighbourhood}}
-    {{assettype}}
-    {{assetminrent}}
-    {{assetshorttermcontract}}
-    {{assetmaxrent}}
-    {{assetfloor}}
-    {{assetnofloors}}
-    {{assetavailableper}}
-    {{assetavailabledate}}
-    {{assetmusicalinstruments}}
-    {{assetstateofmaintenance}}
-    {{assetsurface}}
-    {{assetpets}}
-    {{assetrentaltype}}
-    {{assetobjecttype}}
-    {{assethousekind}}
-    {{assetyear}}
-    {{assetconstructiontype}}
-    {{assetisshared}}
-    {{assetupholsterytype}}
-    {{assetwarranteerequired}}
-    {{assetmaxperson}}
-    {{assetwashingmachine}}
+    Updated at: {{updated_at}}<br>
+    Status: {{status}}<br>
+    Sinds: {{statussince}}<br>
+    <h3>Kosten</h3>
+    Servicekosten: {{assetservice}},=<br>
+    Meubileringskosten: {{assetfurniture}},=<br>
+    Stoffering {{assetupholstery}},=<br>
+    Water: {{assetwater}},=<br>
+    Gas en licht: {{assetgasandlight}},=<br>
+    Internet en kabel: {{assetcableandinternet}},=<br>
+    Verwarming (cv/blok): {{assetheatingsystem}},=<br>
+    Overige kosten: {{assetrest}}<br>
+
+    <br>
+    Totale huur: {{totalrent}},=
+    <br>
+    <h3>Teksten</h3>
+    Advertentietitel: {{assetadtitle}}<br>
+    Kleine introtekst: {{assetsmallintrotext}}<br>
+    Advertentietitel engels: {{assettitleen}}<br>
+    Klein engelse introtekst: {{assetdetailtextensmall}}<br>
+
+
+    <h3>Details</h3>
+    Aantal slaapkamers: {{assetnumberbedrooms}}<br>
+    Aantal woonkamers: {{assetliving}}<br>
+    Aantal badkamers: {{assetnumberbathrooms}}<br>
+    Aantal toiletten: {{assetnumbertoilets}}<br>
+    Heeft tuin: {{assetgarden}}<br>
+    Heeft terras: {{assetterras}}<br>
+
+    Heeft balkon: {{assetbalcony}}<br>
+    Hefet garage: {{assethasgarage}}}<br>
+    Heeft bad: {{assethasbath}}<br>
+    Heeft wasmachine: {{assetwashingmachine}}<br>
+    Heeft parkeerplek: {{assethasparking}}<br>
+    Heeft lift: {{assethaslift}}<br>
+    Heeft airco: {{assethasairconditioning}}<br>
+    Heeft zwembad: {{assethasswimmingpool}}<br>
+    Heeft openhaard: {{assethasfireplace}}<br>
+    Energielabel: {{assetenergylable}}<br>
+    Buurt: {{assetneighbourhood}}<br>
+    Inrichtingstype: {{assetupholsterytype}}<br>
+    Type woning: {{assettype}}<br>
+    {{assetrentaltype}}<br>
+    {{assetobjecttype}}<br>
+    {{assethousekind}}<br>
+    Bouwjaar: {{assetyear}}<br>
+    Contructie: {{assetconstructiontype}}<br>
+    Minimale huurperiode: {{assetminrent}}<br>
+    Tijdelijkhuurcontract{{assetshorttermcontract}}<br>
+    Maximale huurperiode: {{assetmaxrent}}<br>
+    Verdieping:{{assetfloor}} van {{assetnofloors}}<br>
+    Beschikbaar per (type, direct op per datum): {{assetavailableper}}<br>
+    Beschikbaarheodsdatum indien perdatum, leeg indien per direct: {{assetavailabledate}}<br>
+    Muziekinstrumenten toegelaten: {{assetmusicalinstruments}}<br>
+    Staat van onderhoud: {{assetstateofmaintenance}}<br>
+    Oppervlakte: {{assetsurface}}<br>
+    Huisdieren: {{assetpets}}<br>
+
+    Huis is gedeeld: {{assetisshared}}<br>
+
+    Garantieverklaring nodig: {{assetwarranteerequired}}<br>
+    Max aantal personen: {{assetmaxperson}}<br>
+
 </li>
